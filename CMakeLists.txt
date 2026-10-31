@@ -44,7 +44,11 @@ FetchContent_Declare(
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 FetchContent_MakeAvailable(glfw glad spdlog)
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} 
+    src/main.cpp
+    src/common.cpp src/common.h
+    src/shader.cpp src/shader.h
+    )
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog)
 
 # 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
@@ -53,6 +57,15 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     WINDOW_WIDTH=${WINDOW_WIDTH}
     WINDOW_HEIGHT=${WINDOW_HEIGHT}
 )
+
+# 빌드할 때마다 shader 폴더를 실행 파일 옆으로 복사 (셰이더만 고쳐도 반영되도록 별도 타깃으로 매번 실행)
+add_custom_target(copy_shaders ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/shader
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
+    COMMENT "Copying shaders"
+)
+add_dependencies(${PROJECT_NAME} copy_shaders)
 
 # 한국어 Windows에서 MSVC는 소스를 CP949로 읽으므로 UTF-8로 읽도록 지정
 if(MSVC)

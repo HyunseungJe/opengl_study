@@ -1,4 +1,5 @@
 #include "common.h"
+#include "shader.h"
 
 void OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
     SPDLOG_INFO("key: {}, scancode: {}, action: {}, mods: {}{}{}",
@@ -51,6 +52,12 @@ int main(int argc, const char** argv)
 
     auto glVersion = glGetString(GL_VERSION);
     SPDLOG_INFO("OpenGL {}", reinterpret_cast<const char*>(glVersion));
+
+    auto vertexShader = Shader::CreateFromFile("./shader/simple.vs", GL_VERTEX_SHADER);
+    auto fragmentShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
+    SPDLOG_INFO("vertex shader id: {}", vertexShader->Get());
+    SPDLOG_INFO("fragment shader id: {}", fragmentShader->Get());
+
 
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, OnKeyEvent);
