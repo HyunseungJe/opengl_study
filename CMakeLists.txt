@@ -4,6 +4,10 @@ project(opengl_study LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(WINDOW_NAME "OpenGL Study")
+set(WINDOW_WIDTH 960)
+set(WINDOW_HEIGHT 540)
+
 include(FetchContent)
 
 # GLFW: 창 생성, 입력 처리
@@ -34,6 +38,13 @@ FetchContent_MakeAvailable(glfw glad)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad)
+
+# 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    WINDOW_NAME="${WINDOW_NAME}"
+    WINDOW_WIDTH=${WINDOW_WIDTH}
+    WINDOW_HEIGHT=${WINDOW_HEIGHT}
+)
 
 # 한국어 Windows에서 MSVC는 소스를 CP949로 읽으므로 UTF-8로 읽도록 지정
 if(MSVC)
