@@ -1,8 +1,4 @@
-#include <spdlog/spdlog.h>
-#include <glad/glad.h> 
-#include <GLFW/glfw3.h>
-
-#include <iostream>
+#include "common.h"
 
 void OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
     SPDLOG_INFO("key: {}, scancode: {}, action: {}, mods: {}{}{}",
