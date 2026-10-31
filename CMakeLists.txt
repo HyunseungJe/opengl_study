@@ -32,12 +32,20 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
+# spdlog: 로깅 (SPDLOG_INFO, SPDLOG_ERROR 등)
+FetchContent_Declare(
+    spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog.git
+    GIT_TAG v1.15.3
+    GIT_SHALLOW TRUE
+)
+
 # glad v0.1.36은 cmake_minimum_required(VERSION 3.0)이라 CMake 4.x에서 거부됨
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-FetchContent_MakeAvailable(glfw glad)
+FetchContent_MakeAvailable(glfw glad spdlog)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog)
 
 # 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
 target_compile_definitions(${PROJECT_NAME} PRIVATE

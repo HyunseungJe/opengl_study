@@ -1,9 +1,18 @@
+#include <spdlog/spdlog.h>
 #include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 
 #include <iostream>
 
 void OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    SPDLOG_INFO("key: {}, scancode: {}, action: {}, mods: {}{}{}",
+        key, scancode,
+        action == GLFW_PRESS ? "Pressed" :
+        action == GLFW_RELEASE ? "Released" :
+        action == GLFW_REPEAT ? "Repeat" : "Unknown",
+        mods & GLFW_MOD_CONTROL ? "C" : "-",
+        mods & GLFW_MOD_SHIFT ? "S" : "-",
+        mods & GLFW_MOD_ALT? "A" : "-");
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
@@ -18,7 +27,9 @@ int main(int argc, const char** argv)
 {
     if (!glfwInit())
     {
-        std::cerr << "Failed to initialize GLFW\n";
+        const char* description = nullptr;
+        glfwGetError(&description);
+        SPDLOG_ERROR("Failed to initialize GLFW: {}", description);
         return -1;
     }
 
@@ -29,7 +40,7 @@ int main(int argc, const char** argv)
     GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_NAME, nullptr, nullptr);
     if (!window)
     {
-        std::cerr << "Failed to create GLFW window\n";
+        SPDLOG_ERROR("Failed to create GLFW window");
         glfwTerminate();
         return -1;
     }
@@ -37,12 +48,13 @@ int main(int argc, const char** argv)
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
     {
-        std::cerr << "Failed to initialize glad\n";
+        SPDLOG_ERROR("Failed to initialize glad");
         glfwTerminate();
         return -1;
     }
 
-    std::cout << "OpenGL " << glGetString(GL_VERSION) << '\n';
+    auto glVersion = glGetString(GL_VERSION);
+    SPDLOG_INFO("OpenGL {}", reinterpret_cast<const char*>(glVersion));
 
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, OnKeyEvent);
