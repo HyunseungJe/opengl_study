@@ -1,7 +1,13 @@
-#include <glad/glad.h> // GLFW보다 먼저 include 해야 함
+#include <glad/glad.h> 
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+
+void OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, true);
+    }
+}
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -28,7 +34,6 @@ int main(int argc, const char** argv)
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
     if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
     {
@@ -39,11 +44,11 @@ int main(int argc, const char** argv)
 
     std::cout << "OpenGL " << glGetString(GL_VERSION) << '\n';
 
+    glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
+    glfwSetKeyCallback(window, OnKeyEvent);
+
     while (!glfwWindowShouldClose(window))
     {
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, true);
-
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
