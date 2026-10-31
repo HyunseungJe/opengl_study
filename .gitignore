@@ -1,0 +1,7 @@
+# CMake 빌드 결과물 (FetchContent로 받은 GLFW, glad 포함)
+build/
+out/
+
+# IDE
+.vs/
+*.user
