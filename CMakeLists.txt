@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME}
     src/main.cpp
     src/common.cpp src/common.h
     src/shader.cpp src/shader.h
+    src/program.h src/program.cpp
     )
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog)
 
