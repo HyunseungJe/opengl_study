@@ -51,6 +51,8 @@ add_executable(${PROJECT_NAME}
     src/program.h src/program.cpp
     src/context.h src/context.cpp
     src/buffer.h src/buffer.cpp
+    src/vertex_layout.h
+    src/vertex_layout.cpp
     )
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog)
 
