@@ -74,14 +74,17 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     WINDOW_HEIGHT=${WINDOW_HEIGHT}
 )
 
-# 빌드할 때마다 shader 폴더를 실행 파일 옆으로 복사 (셰이더만 고쳐도 반영되도록 별도 타깃으로 매번 실행)
-add_custom_target(copy_shaders ALL
+# 빌드할 때마다 shader, image 폴더를 실행 파일 옆으로 복사 (리소스만 고쳐도 반영되도록 별도 타깃으로 매번 실행)
+add_custom_target(copy_resources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/shader
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/shader
-    COMMENT "Copying shaders"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/image
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/image
+    COMMENT "Copying shaders and images"
 )
-add_dependencies(${PROJECT_NAME} copy_shaders)
+add_dependencies(${PROJECT_NAME} copy_resources)
 
 # 한국어 Windows에서 MSVC는 소스를 CP949로 읽으므로 UTF-8로 읽도록 지정
 if(MSVC)
