@@ -44,6 +44,17 @@ FetchContent_Declare(
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 FetchContent_MakeAvailable(glfw glad spdlog)
 
+# stb_image: 이미지 로더 (헤더 파일 하나만 받아옴, 커밋과 해시를 고정해 항상 같은 파일)
+set(STB_COMMIT d14d46f6b44456eb88beac58cba833a4135d4c89)
+set(STB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/stb)
+file(DOWNLOAD
+    https://raw.githubusercontent.com/nothings/stb/${STB_COMMIT}/stb_image.h
+    ${STB_INCLUDE_DIR}/stb_image.h
+    EXPECTED_HASH SHA256=594c2fe35d49488b4382dbfaec8f98366defca819d916ac95becf3e75f4200b3
+)
+add_library(stb_image INTERFACE)
+target_include_directories(stb_image INTERFACE ${STB_INCLUDE_DIR})
+
 add_executable(${PROJECT_NAME} 
     src/main.cpp
     src/common.cpp src/common.h
@@ -51,10 +62,10 @@ add_executable(${PROJECT_NAME}
     src/program.h src/program.cpp
     src/context.h src/context.cpp
     src/buffer.h src/buffer.cpp
-    src/vertex_layout.h
-    src/vertex_layout.cpp
+    src/vertex_layout.h src/vertex_layout.cpp
+    src/image.h src/image.cpp
     )
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image)
 
 # 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
