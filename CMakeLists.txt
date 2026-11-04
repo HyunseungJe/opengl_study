@@ -51,9 +51,33 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
+# Dear ImGui: 디버깅용 GUI (슬라이더, 버튼 등). 자체 CMake가 없어서 소스만 받아옴
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG v1.91.9b
+    GIT_SHALLOW TRUE
+)
+
 # glad v0.1.36은 cmake_minimum_required(VERSION 3.0)이라 CMake 4.x에서 거부됨
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-FetchContent_MakeAvailable(glfw glad spdlog glm)
+FetchContent_MakeAvailable(glfw glad spdlog glm imgui)
+
+# ImGui 소스 + GLFW/OpenGL3 백엔드를 라이브러리 하나로 묶음
+add_library(imgui STATIC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
+target_include_directories(imgui PUBLIC
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+)
+target_link_libraries(imgui PUBLIC glfw)
 
 # stb_image: 이미지 로더 (헤더 파일 하나만 받아옴, 커밋과 해시를 고정해 항상 같은 파일)
 set(STB_COMMIT d14d46f6b44456eb88beac58cba833a4135d4c89)
@@ -77,7 +101,7 @@ add_executable(${PROJECT_NAME}
     src/image.h src/image.cpp
     src/texture.h src/texture.cpp
     )
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm imgui)
 
 # 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
 target_compile_definitions(${PROJECT_NAME} PRIVATE

@@ -1,4 +1,6 @@
 #include "context.h"
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 void OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mods) {
     SPDLOG_INFO("key: {}, scancode: {}, action: {}, mods: {}{}{}",
@@ -65,6 +67,13 @@ int main(int argc, const char** argv)
     auto glVersion = glGetString(GL_VERSION);
     SPDLOG_INFO("OpenGL {}", reinterpret_cast<const char*>(glVersion));
 
+    auto imguiContext = ImGui::CreateContext();
+    ImGui::SetCurrentContext(imguiContext);
+    ImGui_ImplGlfw_InitForOpenGL(window, false);
+    ImGui_ImplOpenGL3_Init();
+    ImGui_ImplOpenGL3_CreateFontsTexture();
+    ImGui_ImplOpenGL3_CreateDeviceObjects();
+
     auto context = Context::Create();
     if (!context) {
         SPDLOG_ERROR("failed to create context");
@@ -83,13 +92,23 @@ int main(int argc, const char** argv)
 
     while (!glfwWindowShouldClose(window))
     {
+        glfwPollEvents();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         context->ProcessInput(window);
         context->Render();
 
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
     context.reset();
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext(imguiContext);
 
     glfwTerminate();
     return 0;
