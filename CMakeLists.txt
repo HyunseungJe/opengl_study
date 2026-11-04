@@ -40,9 +40,20 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
+# GLM: 벡터/행렬 수학 (glm::vec3, glm::mat4, glm::translate 등)
+set(GLM_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLM_BUILD_LIBRARY OFF CACHE BOOL "" FORCE)
+set(GLM_BUILD_INSTALL OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm.git
+    GIT_TAG 1.0.1
+    GIT_SHALLOW TRUE
+)
+
 # glad v0.1.36은 cmake_minimum_required(VERSION 3.0)이라 CMake 4.x에서 거부됨
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-FetchContent_MakeAvailable(glfw glad spdlog)
+FetchContent_MakeAvailable(glfw glad spdlog glm)
 
 # stb_image: 이미지 로더 (헤더 파일 하나만 받아옴, 커밋과 해시를 고정해 항상 같은 파일)
 set(STB_COMMIT d14d46f6b44456eb88beac58cba833a4135d4c89)
@@ -66,7 +77,7 @@ add_executable(${PROJECT_NAME}
     src/image.h src/image.cpp
     src/texture.h src/texture.cpp
     )
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm)
 
 # 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
