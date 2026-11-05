@@ -100,6 +100,7 @@ add_executable(${PROJECT_NAME}
     src/vertex_layout.h src/vertex_layout.cpp
     src/image.h src/image.cpp
     src/texture.h src/texture.cpp
+    src/mesh.h src/mesh.cpp
     )
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm imgui)
 
