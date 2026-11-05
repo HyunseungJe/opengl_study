@@ -10,36 +10,36 @@ ContextUPtr Context::Create() {
 }
 
 bool Context::Init() {
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
+    float vertices[] = { // pos.xyz, normal.xyz, texcoord.uv
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
 
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f, 1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,
 
-        -0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
 
-        0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
 
-        -0.5f,  0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f, 1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f, 0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f,
     };
 
     uint32_t indices[] = {
@@ -53,15 +53,16 @@ bool Context::Init() {
 
     m_vertexLayout = VertexLayout::Create();
 
-    m_vertexBuffer = Buffer::CreateWithData(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices, sizeof(float) * 120);
+    m_vertexBuffer = Buffer::CreateWithData(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vertices, sizeof(float) * 192);
 
-    m_vertexLayout->SetAttrib(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
-    m_vertexLayout->SetAttrib(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, sizeof(float) * 3);
+    m_vertexLayout->SetAttrib(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, 0);
+    m_vertexLayout->SetAttrib(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 8, sizeof(float) * 3);
+    m_vertexLayout->SetAttrib(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 8, sizeof(float) * 6);
 
     m_indexBuffer = Buffer::CreateWithData(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, indices, sizeof(uint32_t) * 36);
 
-    ShaderPtr vertShader = Shader::CreateFromFile("./shader/texture.vs", GL_VERTEX_SHADER);
-    ShaderPtr fragShader = Shader::CreateFromFile("./shader/texture.fs", GL_FRAGMENT_SHADER);
+    ShaderPtr vertShader = Shader::CreateFromFile("./shader/lighting.vs", GL_VERTEX_SHADER);
+    ShaderPtr fragShader = Shader::CreateFromFile("./shader/lighting.fs", GL_FRAGMENT_SHADER);
     if (!vertShader || !fragShader)
         return false;
     SPDLOG_INFO("vertex shader id: {}", vertShader->Get());
@@ -72,16 +73,7 @@ bool Context::Init() {
         return false;
     SPDLOG_INFO("program id: {}", m_program->Get());
 
-    // auto loc = glGetUniformLocation(m_program->Get(), "color");
-    // m_program->Use();
-    // glUniform4f(loc, 1.0f, 1.0f, 0.0f, 1.0f);
-
     glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
-
-    // Texture load
-    // auto image = Image::Load("./image/container.jpg");
-    // if (!image) return false;
-    // SPDLOG_INFO("image: {}x{}, {} channels", image->GetWidth(), image->GetHeight(), image->GetChannelCount());
 
     auto image = Image::Load("./image/container.jpg");
     m_texture = Texture::CreateFromImage(image.get());
@@ -97,18 +89,6 @@ bool Context::Init() {
     m_program->Use();
     m_program->SetUniform("tex", 0);
     m_program->SetUniform("tex2", 1);
-
-    // // x축으로 -55도 회전
-    // auto model = glm::rotate(glm::mat4(1.0f),
-    // glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    // model = glm::rotate(model, glm::radians(-30.0f), glm::vec3(0.f, 1.f, 0.f));
-    // // 카메라는 원점으로부터 z축 방향으로 -3만큼 떨어짐
-    // auto view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
-    // // 종횡비 4:3, 세로화각 45도의 원근 투영
-    // auto projection = glm::perspective(glm::radians(45.0f),
-    // (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT, 0.01f, 10.0f);
-    // auto transform = projection * view * model;
-    // m_program->SetUniform("transform", transform);
 
     return true;
 }
@@ -128,6 +108,13 @@ void Context::Render() {
             m_cameraPitch = 0.0f;
             m_cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
         }
+        if (ImGui::CollapsingHeader("light", ImGuiTreeNodeFlags_DefaultOpen)) {
+            ImGui::DragFloat3("light pos", glm::value_ptr(m_lightPos), 0.01f);
+            ImGui::ColorEdit3("light color", glm::value_ptr(m_lightColor));
+            ImGui::ColorEdit3("object color", glm::value_ptr(m_objectColor));
+            ImGui::SliderFloat("ambient strength", &m_ambientStrength, 0.0f, 1.0f);
+        }
+        ImGui::Checkbox("animation", &m_animation);
     }
     ImGui::End();
 
@@ -156,14 +143,32 @@ void Context::Render() {
 
     auto view = glm::lookAt(m_cameraPos, m_cameraPos + m_cameraFront, m_cameraUp);
 
+    auto lightModelTransform =
+        glm::translate(glm::mat4(1.0), m_lightPos) *
+        glm::scale(glm::mat4(1.0), glm::vec3(0.1f));
+        m_program->Use();
+        m_program->SetUniform("lightPos", m_lightPos);
+        m_program->SetUniform("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        m_program->SetUniform("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        m_program->SetUniform("ambientStrength", 1.0f);
+        m_program->SetUniform("transform", projection * view * lightModelTransform);
+        m_program->SetUniform("modelTransform", lightModelTransform);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+
+    m_program->Use();
+    m_program->SetUniform("lightPos", m_lightPos);
+    m_program->SetUniform("lightColor", m_lightColor);
+    m_program->SetUniform("objectColor", m_objectColor);
+    m_program->SetUniform("ambientStrength", m_ambientStrength);
+
     for (size_t i = 0; i < cubePositions.size(); i++){
         auto& pos = cubePositions[i];
         auto model = glm::translate(glm::mat4(1.0f), pos);
-        model = glm::rotate(model,
-            glm::radians((float)glfwGetTime() * 120.0f + 20.0f * (float)i),
-            glm::vec3(1.0f, 0.5f, 0.0f));
+        auto angle = glm::radians((float)glfwGetTime() * 120.0f + 20.0f * (float)i);
+        model = glm::rotate(model, m_animation ? angle : 0.0f, glm::vec3(1.0f, 0.5f, 0.0f));
         auto transform = projection * view * model;
         m_program->SetUniform("transform", transform);
+        m_program->SetUniform("modelTransform", model);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     }
 
