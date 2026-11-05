@@ -59,9 +59,23 @@ FetchContent_Declare(
     GIT_SHALLOW TRUE
 )
 
+# assimp: 3D 모델 파일 로더 (.obj, .fbx 등). 실행 파일에 포함되도록 정적 라이브러리로 빌드
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+set(ASSIMP_NO_EXPORT ON CACHE BOOL "" FORCE)
+set(ASSIMP_WARNINGS_AS_ERRORS OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    assimp
+    GIT_REPOSITORY https://github.com/assimp/assimp.git
+    GIT_TAG v6.0.2
+    GIT_SHALLOW TRUE
+)
+
 # glad v0.1.36은 cmake_minimum_required(VERSION 3.0)이라 CMake 4.x에서 거부됨
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
-FetchContent_MakeAvailable(glfw glad spdlog glm imgui)
+FetchContent_MakeAvailable(glfw glad spdlog glm imgui assimp)
 
 # ImGui 소스 + GLFW/OpenGL3 백엔드를 라이브러리 하나로 묶음
 add_library(imgui STATIC
@@ -102,7 +116,7 @@ add_executable(${PROJECT_NAME}
     src/texture.h src/texture.cpp
     src/mesh.h src/mesh.cpp
     )
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm imgui)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm imgui assimp::assimp)
 
 # 소스 코드에서 쓸 매크로 (#define WINDOW_NAME "..." 와 같은 효과)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -111,7 +125,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     WINDOW_HEIGHT=${WINDOW_HEIGHT}
 )
 
-# 빌드할 때마다 shader, image 폴더를 실행 파일 옆으로 복사 (리소스만 고쳐도 반영되도록 별도 타깃으로 매번 실행)
+# 빌드할 때마다 shader, image, model 폴더를 실행 파일 옆으로 복사 (리소스만 고쳐도 반영되도록 별도 타깃으로 매번 실행)
 add_custom_target(copy_resources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/shader
@@ -119,7 +133,10 @@ add_custom_target(copy_resources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/image
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/image
-    COMMENT "Copying shaders and images"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/model
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/model
+    COMMENT "Copying shaders, images and models"
 )
 add_dependencies(${PROJECT_NAME} copy_resources)
 
