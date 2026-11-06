@@ -115,6 +115,7 @@ add_executable(${PROJECT_NAME}
     src/image.h src/image.cpp
     src/texture.h src/texture.cpp
     src/mesh.h src/mesh.cpp
+    src/model.h src/model.cpp
     )
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad spdlog::spdlog stb_image glm::glm imgui assimp::assimp)
 
